@@ -2,18 +2,20 @@
 session_start();
 require_once('functions.php');
 
-// Si no hay sesión iniciada → redirige a login
+// si no hi ha sessió, redirect a index (login)
+
 if (!isUserLoggedIn()) {
     header("Location: index.html");
     exit;
 }
 
-// Obtener nombre o username
 $nom = $_SESSION['userFirstName'] ?? '';
 $usuari = $_SESSION['username'] ?? '';
 ?>
+
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
     <meta charset="UTF-8">
     <title>Benvingut</title>
@@ -34,12 +36,14 @@ $usuari = $_SESSION['username'] ?? '';
             color: white;
             text-shadow: 1px 1px 4px black;
         }
+
         .contenidor {
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0, 0, 0, 0.6);
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
         }
+
         .boton-logout {
             margin-top: 20px;
             padding: 10px 20px;
@@ -49,11 +53,13 @@ $usuari = $_SESSION['username'] ?? '';
             border-radius: 10px;
             cursor: pointer;
         }
+
         .boton-logout:hover {
             background-color: #ff2222;
         }
     </style>
 </head>
+
 <body>
     <div class="contenidor">
         <h1>Benvingut<?php echo $nom ? ", $nom" : ", $usuari"; ?>!</h1>
@@ -63,4 +69,5 @@ $usuari = $_SESSION['username'] ?? '';
         </form>
     </div>
 </body>
+
 </html>

@@ -1,6 +1,15 @@
 <?php
 session_start();
-session_unset();  // Borrar variables
-session_destroy(); // Cerrar sesión
-header("Location: ../html/index.html"); // Volver al login
+
+// Borrar variables
+
+session_unset();  
+
+// Tancar sessió
+
+session_destroy(); 
+
+// Tornar al login (amb la sessio destruida)
+
+header("Location: ../html/index.html"); 
 exit;

@@ -11,14 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Buscamos por nombre o por email (activo = 1)
+
+        // Busquem per nom o mail i actiu=1 (active = 1)
+
         $consulta = $db->prepare("SELECT * FROM users WHERE (username = ? OR mail = ?) AND active = 1");
         $consulta->execute([$usuari, $usuari]);
 
         $usuariTrobat = $consulta->fetch(PDO::FETCH_ASSOC);
 
         if ($usuariTrobat && password_verify($contrasenya, $usuariTrobat['passHash'])) {
-            // Creamos la sesión
+
+            // creem nova sessió
+
             session_regenerate_id(true);
 
             $_SESSION['iduser'] = $usuariTrobat['iduser'];
@@ -27,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['userFirstName'] = $usuariTrobat['userFirstName'];
             $_SESSION['userLastName'] = $usuariTrobat['userLastName'];
 
-            // Guardamos la fecha de último login
+            // guardem el lastSignIn
+
             $update = $db->prepare("UPDATE users SET lastSignIn = NOW() WHERE iduser = ?");
             $update->execute([$usuariTrobat['iduser']]);
 

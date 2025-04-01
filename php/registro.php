@@ -9,12 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $verifyPassword = $_POST['verifyPassword'];
 
-    // Validación básica
     if ($password !== $verifyPassword) {
         die("Les contrasenyes no coincideixen.");
     }
 
-    // Comprobar si username o email ya existen
+    // comprovem si el user o el mail coincideixen
+
     $check = $db->prepare("SELECT * FROM users WHERE username = ? OR mail = ?");
     $check->execute([$username, $email]);
 
@@ -23,10 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Crear hash de la contrasenya
+    // hashejem contrasenya
+
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    // Insertar usuari nou
+    // insertar usuari nou
+
     $insert = $db->prepare("
         INSERT INTO users (mail, username, passHash, userFirstName, userLastName, creationDate, active)
         VALUES (?, ?, ?, ?, ?, NOW(), 1)
@@ -41,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     // Redirigir al login amb missatge (pot ser amb GET o una variable de sessió temporal)
+  
     header("Location: ../html/index.html");
     exit;
 }
