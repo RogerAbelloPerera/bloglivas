@@ -26,7 +26,7 @@ $usuari = $_SESSION['username'] ?? '';
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0');
+            background-image: url("../assets/olive_wallpaper3.jpg");
             background-size: cover;
             background-position: center;
             height: 100vh;
