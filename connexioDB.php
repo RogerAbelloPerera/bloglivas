@@ -1,5 +1,5 @@
 <?php   
-    $cadena_connexio = 'mysql:dbname=xarxa_social;host=localhost:3306';
+    $cadena_connexio = 'mysql:dbname=bloglivas;host=localhost:3306';
     $usuari = 'root';
     $passwd = '';
     try{

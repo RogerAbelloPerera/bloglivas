@@ -1,35 +1,47 @@
 <?php
 require_once('../connexioDB.php');
-require './functions.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $firstName = trim($_POST['firstName']);
+    $lastName = trim($_POST['lastName']);
+    $password = $_POST['password'];
+    $verifyPassword = $_POST['verifyPassword'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
-
-        $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $usuari = isset($_POST['usuari']) ? $_POST['usuari'] : null;
-        $nom = isset($_POST['nom']) ? $_POST['nom'] : null;
-        $cognoms = isset($_POST['cognoms']) ? $_POST['cognoms'] : null;
-        $data_naixement = isset($_POST['data_naixement']) ? $_POST['data_naixement'] : null;
-        $email = isset($_POST['email']) ? $_POST['email'] : null;
-        $contrasenya = isset($_POST['contrasenya']) ? $_POST['contrasenya'] : null;
-        $actiu = isset($_POST['actiu']) ? $_POST['actiu']    : 0;
-        $token_activacio = isset($_POST['token_activacio']) ? $_POST['token_activacio'] : TRUE;
-        $data_registre = isset($_POST['data_registre']) ? $_POST['data_registre'] : null;
-
-
-        $sql = 'INSERT INTO usuaris (id, usuari, nom, cognoms, data_naixement, email, contrasenya, actiu, token_activacio, data_registre)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-        $insert = $db->prepare($sql);
-        $insert->execute([$id, $usuari, $nom, $cognoms, $data_naixement, $email, $contrasenya, $actiu, $token_activacio, $data_registre]);
-
-        echo "usuari afegit correctament.";
-
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    } catch (PDOException $e) {
-        echo 'Error amb la BDs: ' . $e->getMessage();
+    // Validación básica
+    if ($password !== $verifyPassword) {
+        die("Les contrasenyes no coincideixen.");
     }
+
+    // Comprobar si username o email ya existen
+    $check = $db->prepare("SELECT * FROM users WHERE username = ? OR mail = ?");
+    $check->execute([$username, $email]);
+
+    if ($check->rowCount() > 0) {
+        echo "Aquest nom d'usuari o email ja existeix. Torna enrere i prova amb un altre.";
+        exit;
+    }
+
+    // Crear hash de la contrasenya
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+    // Insertar usuari nou
+    $insert = $db->prepare("
+        INSERT INTO users (mail, username, passHash, userFirstName, userLastName, creationDate, active)
+        VALUES (?, ?, ?, ?, ?, NOW(), 1)
+    ");
+
+    $insert->execute([
+        $email,
+        $username,
+        $passwordHash,
+        $firstName,
+        $lastName
+    ]);
+
+    // Redirigir al login amb missatge (pot ser amb GET o una variable de sessió temporal)
+    header("Location: ../html/index.html");
+    exit;
 }
 ?>
