@@ -62,8 +62,9 @@ $usuari = $_SESSION['username'] ?? '';
 
 <body>
     <div class="contenidor">
+        <img src="../assets/logo.png" alt="bloglivas">
         <h1>Benvingut<?php echo $nom ? ", $nom" : ", $usuari"; ?>!</h1>
-        <p>Estàs connectat a la teva xarxa social 🎉</p>
+        <p>Estàs connectat a bloglivas!!!</p>
         <form action="logout.php" method="POST">
             <button type="submit" class="boton-logout">Tancar sessió</button>
         </form>
