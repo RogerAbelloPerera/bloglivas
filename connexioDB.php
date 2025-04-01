@@ -1,9 +1,8 @@
 <?php   
-    $cadena_connexio = 'mysql:dbname=examen_php;host=localhost:3306';
+    $cadena_connexio = 'mysql:dbname=xarxa_social;host=localhost:3306';
     $usuari = 'root';
     $passwd = '';
     try{
-        //Ens connectem a la BDs
         $db = new PDO($cadena_connexio, $usuari, $passwd, 
         array(PDO::ATTR_PERSISTENT => true));
 
