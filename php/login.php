@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../connexioDB.php');
+require_once('../DBConnection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuari = trim($_POST['usuari'] ?? '');
