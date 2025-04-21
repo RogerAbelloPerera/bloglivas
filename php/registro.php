@@ -1,31 +1,37 @@
 <?php
 require_once('../connexioDB.php');
 require './functions.php';
-
+require './mailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
+        $id = $_POST['id'] ?? null;
+        $usuari = $_POST['usuari'] ?? null;
+        $nom = $_POST['nom'] ?? null;
+        $cognoms = $_POST['cognoms'] ?? null;
+        $data_naixement = $_POST['data_naixement'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $contrasenya = $_POST['contrasenya'] ?? null;
+        $data_registre = $_POST['data_registre'] ?? null;
 
-        $id = isset($_POST['id']) ? $_POST['id'] : null;
-        $usuari = isset($_POST['usuari']) ? $_POST['usuari'] : null;
-        $nom = isset($_POST['nom']) ? $_POST['nom'] : null;
-        $cognoms = isset($_POST['cognoms']) ? $_POST['cognoms'] : null;
-        $data_naixement = isset($_POST['data_naixement']) ? $_POST['data_naixement'] : null;
-        $email = isset($_POST['email']) ? $_POST['email'] : null;
-        $contrasenya = isset($_POST['contrasenya']) ? $_POST['contrasenya'] : null;
-        $actiu = isset($_POST['actiu']) ? $_POST['actiu']    : 0;
-        $token_activacio = isset($_POST['token_activacio']) ? $_POST['token_activacio'] : TRUE;
-        $data_registre = isset($_POST['data_registre']) ? $_POST['data_registre'] : null;
+        $activationCode = hash('sha256', uniqid(mt_rand(), true));
+        $activationDate = null;
+        $actiu = 0;
 
-
-        $sql = 'INSERT INTO usuaris (id, usuari, nom, cognoms, data_naixement, email, contrasenya, actiu, token_activacio, data_registre)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $sql = 'INSERT INTO usuaris (id, usuari, nom, cognoms, data_naixement, email, contrasenya, actiu, token_activacio, data_registre, activationCode, activationDate)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $insert = $db->prepare($sql);
-        $insert->execute([$id, $usuari, $nom, $cognoms, $data_naixement, $email, $contrasenya, $actiu, $token_activacio, $data_registre]);
+        $insert->execute([$id, $usuari, $nom, $cognoms, $data_naixement, $email, $contrasenya, $actiu, 1, $data_registre, $activationCode, $activationDate]);
 
-        echo "usuari afegit correctament.";
+        $link = "http://localhost/php/mailCheckAccount.php?code=$activationCode&mail=$email";
+        $subject = "Activa el teu compte";
+        $body = "<h1>Benvingut/da $nom!</h1>
+                 <p>Fes clic a l’enllaç per activar el teu compte:</p>
+                 <a href='$link'>Activa el teu compte</a>";
+        sendEmail($email, $subject, $body);
 
+        echo "Usuari registrat correctament. Revisa el teu correu per activar el compte.";
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
     } catch (PDOException $e) {
