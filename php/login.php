@@ -30,6 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['mail'] = $usuariTrobat['mail'];
             $_SESSION['userFirstName'] = $usuariTrobat['userFirstName'];
             $_SESSION['userLastName'] = $usuariTrobat['userLastName'];
+            $_SESSION['biography'] = $usuariTrobat['biography'];
+            $_SESSION['location'] = $usuariTrobat['location'];
+            $_SESSION['age'] = $usuariTrobat['age'];
+            $_SESSION['profile_image'] = $usuariTrobat['profile_image'];
+            $_SESSION['banner_image'] = $usuariTrobat['banner_image'];
 
             // guardem el lastSignIn
 
