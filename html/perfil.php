@@ -12,11 +12,8 @@ $usuari = $_SESSION['username'] ?? '';
 $biography = $_SESSION['biography'] ?? '';
 $location = $_SESSION['location'] ?? '';
 $age = $_SESSION['age'] ?? '';
-$profileImage = (!empty($_SESSION['profile_image']) && file_exists("../uploads/" . $_SESSION['profile_image']))
-    ? "../uploads/" . $_SESSION['profile_image'] : "../uploads/default_profile.jpg";
-
-$bannerImage = (!empty($_SESSION['banner_image']) && file_exists("../uploads/" . $_SESSION['banner_image']))
-    ? "../uploads/" . $_SESSION['banner_image'] : "../uploads/default_banner.jpg"; // pon este archivo también
+$profileImage = $_SESSION['profile_image'] ?? 'uploads/default_profile.jpg';
+$bannerImage = $_SESSION['banner_image'] ?? 'uploads/default_banner.jpg';
 
 ?>
 
@@ -76,19 +73,26 @@ $bannerImage = (!empty($_SESSION['banner_image']) && file_exists("../uploads/" .
 <body>
 
 <!-- Banner opcional -->
-<div class="banner" style="background-image: url('<?php echo htmlspecialchars($bannerImage); ?>');"></div>
+<a href="../<?php echo htmlspecialchars($bannerImage); ?>" target="_blank">
+    <div class="banner" style="background-image: url('../<?php echo htmlspecialchars($bannerImage); ?>');"></div>
+</a>
 
 <div class="profile-container">
 
-    <img class="profile-image" src="<?php echo htmlspecialchars($profileImage); ?>" alt="Imatge de perfil">
+<a href="../<?php echo htmlspecialchars($_SESSION['profile_image']); ?>" target="_blank">
+    <img class="profile-image" src="../<?php echo htmlspecialchars($_SESSION['profile_image']); ?>" alt="Imatge de perfil">
+</a>
 
     <div class="info">
         <h1>Benvingut<?php echo $nom ? ", $nom" : ", $usuari"; ?>!</h1> 
         <p><strong>Biografia:</strong> <?php echo $biography ? $biography : "No disponible"; ?></p>
         <p><strong>Ubicació:</strong> <?php echo $location ? $location : "No disponible"; ?></p>
         <p><strong>Edat:</strong> <?php echo $age ? $age : "No disponible"; ?></p>
-        <form action="../php/editarPerfil.php" method="POST">
-            <button type="submit" class="boton">Tancar sessió</button>
+        <form action="../html/editarPerfil.php" method="POST">
+            <button type="submit" class="boton">Editar Perfil</button>
+        </form>
+        <form action="../php/home.php" method="POST">
+            <button type="submit" class="boton">Volver pantalla principal</button>
         </form>
     </div>
 

@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bannerImagePath = null;
 
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-        $profileImagePath = '../uploads' . basename($_FILES['profile_image']['name']);
+        $profileImagePath = '../uploads/' . basename($_FILES['profile_image']['name']);
         move_uploaded_file($_FILES['profile_image']['tmp_name'], $profileImagePath);
     }
 
