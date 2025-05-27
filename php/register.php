@@ -26,17 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Comprobación y subida de archivos
-    $profileImagePath = null;
-    $bannerImagePath = null;
+    $profileImageName = null;
+    $bannerImageName = null;
 
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
-        $profileImagePath = '../uploads/' . basename($_FILES['profile_image']['name']);
-        move_uploaded_file($_FILES['profile_image']['tmp_name'], $profileImagePath);
+    $profileImageName = basename($_FILES['profile_image']['name']);
+    $targetPath = "../uploads/" . $profileImageName;
+    if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetPath)) {
+        $profileImagePath = "uploads/" . $profileImageName;  // Esta es la que se guarda en la base de datos
     }
 
-    if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] === UPLOAD_ERR_OK) {
-        $bannerImagePath = '../uploads' . basename($_FILES['banner_image']['name']);
-        move_uploaded_file($_FILES['banner_image']['tmp_name'], $bannerImagePath);
+
+    $bannerImageName = basename($_FILES['banner_image']['name']);
+    $targetPath = "../uploads/" . $bannerImageName;
+    if (move_uploaded_file($_FILES['banner_image']['tmp_name'], $targetPath)) {
+        $bannerImagePath = "uploads/" . $bannerImageName;
     }
 
     // Hashear la contraseña

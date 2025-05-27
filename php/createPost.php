@@ -7,7 +7,7 @@ if (!isset($_SESSION['iduser'])) {
     exit();
 }
 
-$missatge = ""; // per mostrar errors o confirmacions
+$missatge = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $text = trim($_POST['text'] ?? '');
@@ -17,20 +17,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($text)) {
         $missatge = "El text no pot estar buit.";
     } else {
-        if (isset($_FILES['imatge']) && $_FILES['imatge']['error'] === UPLOAD_ERR_OK) {
-            $directori = 'uploads/';
-            if (!is_dir($directori)) {
-                mkdir($directori, 0777, true);
+        // Si hi ha imatge
+        if (!empty($_FILES['imatge']['name'])) {
+            $nomFitxer = basename($_FILES['imatge']['name']);
+            $nomTemporal = time() . '_' . $nomFitxer;
+            $rutaFitxer = "../uploads/" . $nomTemporal;
+
+            if (move_uploaded_file($_FILES['imatge']['tmp_name'], $rutaFitxer)) {
+                $imatge = "uploads/" . $nomTemporal;
+            } else {
+                $missatge = "No s'ha pogut pujar la imatge.";
             }
-            $nomFitxer = basename($FILES['imatge']['name']);
-            $rutaFitxer = $directori . time() . '' . $nomFitxer;
-            move_uploaded_file($_FILES['imatge']['tmp_name'], $rutaFitxer);
-            $imatge = $rutaFitxer;
         }
 
+        // INSERT
         try {
             $stmt = $db->prepare("INSERT INTO publicacio (usuari_id, text, imatge) VALUES (?, ?, ?)");
             $stmt->execute([$iduser, $text, $imatge]);
+
+            // Redirecció només si INSERT correcte
             header("Location: home.php");
             exit();
         } catch (PDOException $e) {
@@ -50,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <?php if (!empty($missatge)) echo "<p style='color:red;'>$missatge</p>"; ?>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" action="createPost.php" enctype="multipart/form-data">
         <label for="text">Text:</label><br>
         <textarea name="text" rows="5" cols="50" placeholder="Escriu la teva publicació..." required></textarea><br><br>
 
