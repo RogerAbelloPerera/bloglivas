@@ -4,7 +4,7 @@ require_once('../DBConnection.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recogemos los campos del formulario
     $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
+    $mail = trim($_POST['mail']);
     $firstName = trim($_POST['firstName']);
     $lastName = trim($_POST['lastName']);
     $password = $_POST['password'];
@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Les contrasenyes no coincideixen.");
     }
 
-    // Comprobamos si ya existe usuario o email
+    // Comprobamos si ya existe usuario o mail
     $check = $db->prepare("SELECT * FROM users WHERE username = ? OR mail = ?");
-    $check->execute([$username, $email]);
+    $check->execute([$username, $mail]);
 
     if ($check->rowCount() > 0) {
-        die("Aquest nom d'usuari o email ja existeix.");
+        die("Aquest nom d'usuari o mail ja existeix.");
     }
 
     // Comprobación y subida de archivos
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ");
 
     $insert->execute([
-        $email, $username, $passwordHash, $firstName, $lastName, $biography, $age, $profileImagePath, 
+        $mail, $username, $passwordHash, $firstName, $lastName, $biography, $age, $profileImagePath, 
         $bannerImagePath, $location
     ]);
 

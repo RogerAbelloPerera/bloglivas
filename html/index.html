@@ -21,25 +21,74 @@
         justify-content: center;
         height: 100vh;
       }
+
       .login-container {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(255, 255, 255, 0.95);
         padding: 2rem;
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         text-align: center;
+        position: relative;
+        width: 350px;
       }
-      input {
+
+      input[type="text"],
+      input[type="password"],
+      input[type="mail"] {
         display: block;
         margin: 10px auto;
         padding: 10px;
         width: 80%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
       }
-      button {
+
+      button,
+      input[type="submit"] {
         padding: 10px 20px;
+        margin-top: 10px;
         cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        background-color: #5a9;
+        color: white;
+        font-weight: bold;
       }
+
       .signup {
         margin-top: 15px;
+      }
+
+      .reset-link {
+        margin-top: 15px;
+        font-size: 0.9em;
+      }
+
+      .reset-link a {
+        text-decoration: underline;
+        color: #0073e6;
+        cursor: pointer;
+      }
+
+      #resetModal {
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -30%);
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+        z-index: 1000;
+        width: 300px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+      }
+
+      #resetModal button {
+        background-color: #ccc;
+        color: black;
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -51,7 +100,7 @@
         <input
           type="text"
           name="usuari"
-          placeholder="Username o Email"
+          placeholder="Username o mail"
           required
         />
         <input
@@ -60,11 +109,34 @@
           placeholder="Contrasenya"
           required
         />
-        <button type="submit">Entrar</button>
+        <input type="submit" value="Entrar" />
       </form>
+
+      <form action="../php/cambiarColorFondo.php" method="POST">
+        <input type="submit" value="Canviar color de fons" />
+      </form>
+
       <div class="signup">
         Encara no tens compte? <a href="register.html">Registra't</a>
       </div>
+
+      <div class="reset-link">
+        <a onclick="document.getElementById('resetModal').style.display='block'">
+          Has oblidat la contrasenya?
+        </a>
+      </div>
+    </div>
+
+    <div id="resetModal">
+      <h3>Recuperar contrasenya</h3>
+      <form action="../php/resetPasswordSend.php" method="POST">
+        <label for="mail">Introdueix el teu correu electrònic:</label><br />
+        <input type="mail" name="mail" required /><br />
+        <input type="submit" value="Enviar enllaç de recuperació" />
+      </form>
+      <button onclick="document.getElementById('resetModal').style.display='none'">
+        Tancar
+      </button>
     </div>
   </body>
 </html>
