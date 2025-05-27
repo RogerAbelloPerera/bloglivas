@@ -88,7 +88,7 @@ $bannerImage = $_SESSION['banner_image'] ?? 'uploads/default_banner.jpg';
         <p><strong>Biografia:</strong> <?php echo $biography ? $biography : "No disponible"; ?></p>
         <p><strong>Ubicació:</strong> <?php echo $location ? $location : "No disponible"; ?></p>
         <p><strong>Edat:</strong> <?php echo $age ? $age : "No disponible"; ?></p>
-        <form action="../html/editarPerfil.php" method="POST">
+        <form action="../php/editarPerfil.php" method="POST">
             <button type="submit" class="boton">Editar Perfil</button>
         </form>
         <form action="../php/home.php" method="POST">

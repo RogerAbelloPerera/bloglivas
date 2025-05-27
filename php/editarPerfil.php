@@ -166,7 +166,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         <input type="submit" name="update" value="Desar canvis">
     </form>
 
-    <a href="../html/perfil.php" class="volver-btn">← Tornar al perfil</a>
+    <a href="../php/perfil.php" class="volver-btn">← Tornar al perfil</a>
 </div>
 
 </body>

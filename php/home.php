@@ -65,7 +65,7 @@ $usuari = $_SESSION['username'] ?? '';
         <img src="../assets/logo.png" alt="bloglivas">
         <h1>Benvingut<?php echo $nom ? ", $nom" : ", $usuari"; ?>!</h1>
         <p>Estàs connectat a bloglivas!!!</p>
-        <form action="../html/perfil.php" method="POST">
+        <form action="../php/perfil.php" method="POST">
             <button type="submit" class="boton-logout">Perfil</button>
         </form>
         <form action="logout.php" method="POST">
